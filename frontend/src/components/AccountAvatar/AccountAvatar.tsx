@@ -3,7 +3,7 @@ import styles from "./AccountAvatar.module.css";
 interface AccountAvatarProps {
   name: string;
   avatarUrl?: string;
-  size?: "sm" | "md" | "lg";
+  size?: "xs" | "sm" | "md" | "lg";
   onClick?: () => void;
 }
 

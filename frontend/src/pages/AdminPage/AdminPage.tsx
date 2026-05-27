@@ -29,6 +29,7 @@ import {
   getProfileFullName,
   userAvatarUrl,
 } from "../../utils/userDisplay";
+import { AccountAvatar } from "../../components/AccountAvatar/AccountAvatar";
 import { AdminProductModal } from "../../components/AdminProductModal/AdminProductModal";
 import { AdminSidebar } from "../../components/AdminSidebar/AdminSidebar";
 import { Footer } from "../../components/Footer/Footer";
@@ -122,8 +123,19 @@ export function AdminPage() {
     }
 
     if (errors.length > 0) {
+      const needsAuthService = errors.includes("пользователи");
+      const needsProductService = errors.some((item) =>
+        ["товары", "категории", "заказы"].includes(item)
+      );
+
+      const hint = needsAuthService && !needsProductService
+        ? "Проверьте auth-service."
+        : needsProductService && !needsAuthService
+          ? "Проверьте product-service."
+          : "Проверьте auth-service и product-service.";
+
       setMessage(
-        `Не удалось загрузить: ${errors.join(", ")}. Проверьте product-service.`
+        `Не удалось загрузить: ${errors.join(", ")}. ${hint}`
       );
     }
   };
@@ -847,16 +859,11 @@ export function AdminPage() {
                             <tr key={item.id}>
                               <td>
                                 <div className={styles.productCell}>
-                                  <div className={styles.productThumb}>
-                                    {item.avatar_url ? (
-                                      <img
-                                        src={userAvatarUrl(item.avatar_url)}
-                                        alt=""
-                                      />
-                                    ) : (
-                                      <ProductNoImage compact />
-                                    )}
-                                  </div>
+                                  <AccountAvatar
+                                    name={displayName}
+                                    avatarUrl={userAvatarUrl(item.avatar_url)}
+                                    size="xs"
+                                  />
                                   <span>{displayName}</span>
                                 </div>
                               </td>

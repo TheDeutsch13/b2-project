@@ -5,7 +5,10 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-$dbUrl = "postgres://b2user:b2password@localhost:5432/b2db?sslmode=disable"
+$hostDbUrl = "postgres://b2user:b2password@localhost:5432/b2db?sslmode=disable"
+# From inside Docker container, "localhost" points to the container itself.
+# Services running via `go run` use the host Postgres on localhost:5432, so we reach it via host.docker.internal.
+$dockerDbUrl = "postgres://b2user:b2password@host.docker.internal:5432/b2db?sslmode=disable"
 $escapedEmail = $Email.Replace("'", "''")
 $sql = "UPDATE users SET role = 'admin' WHERE email = '$escapedEmail';"
 
@@ -22,5 +25,7 @@ if (Get-Command psql -ErrorAction SilentlyContinue) {
     psql -h localhost -U b2user -d b2db -c $sql
     Write-Host "Done. Re-login in the browser."
 } else {
-    Write-Host "psql not found — copy the SQL above and run it manually."
+    Write-Host "psql not found - applying the UPDATE via docker postgres:16..."
+    & docker run --rm postgres:16 psql "$dockerDbUrl" -v ON_ERROR_STOP=1 -c "$sql" | Out-Host
+    Write-Host "Done. Re-login in the browser."
 }

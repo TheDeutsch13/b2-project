@@ -18,6 +18,17 @@
   object-fit: cover;
 }
 
+.avatar span {
+  color: #ffffff;
+  line-height: 1;
+}
+
+.xs {
+  width: 40px;
+  height: 40px;
+  font-size: 16px;
+}
+
 .lg {
   width: 72px;
   height: 72px;

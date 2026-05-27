@@ -1,5 +1,7 @@
 # GAMEGEAR — интернет-магазин игровой периферии
 
+> **Инструкция для проверяющего / преподавателя:** [ИНСТРУКЦИЯ_ЗАПУСКА.md](ИНСТРУКЦИЯ_ЗАПУСКА.md) — пошаговый запуск (Docker только для PostgreSQL, Go + Node локально, два репозитория).
+
 Монорепозиторий учебного проекта: React SPA + два Go-микросервиса, общая библиотека `b2-common`, PostgreSQL.
 
 **Сайт:** каталог, корзина, оформление заказа, личный кабинет, админ-панель, чат поддержки, отзывы покупателей.
@@ -106,7 +108,8 @@ npm install
 npm run dev
 ```
 
-Откройте http://localhost:5173
+Откройте http://localhost:5173  
+Полная пошаговая инструкция: **[ИНСТРУКЦИЯ_ЗАПУСКА.md](ИНСТРУКЦИЯ_ЗАПУСКА.md)**
 
 Опционально — демо-товары:
 
@@ -199,13 +202,26 @@ UPDATE users SET role = 'admin' WHERE email = 'your@email.com';
 
 ## Скрипты
 
+Подробная документация: **[scripts/README.md](scripts/README.md)**
+
 | Скрипт | Назначение |
 |--------|------------|
-| `scripts/migrate.ps1` | Применить миграции auth + product |
-| `scripts/migrate-reset.ps1` | Сброс БД (осторожно) |
-| `scripts/grant-admin.ps1` | Назначить admin по email |
-| `scripts/seed-products.mjs` | Заполнить каталог демо-товарами |
-| `scripts/sync-carousel.mjs` | Синхронизация слайдов из `Carousel/` |
+| `migrate.ps1` | Миграции auth + product в Docker Postgres |
+| `migrate-reset.ps1` | Полный сброс БД (только dev) |
+| `migrate-fix-auth.ps1` | Починка «таблица уже существует» для auth |
+| `grant-admin.ps1` | Назначить `admin` по email |
+| `seed-products.mjs` | Демо-товары через API (`npm run seed:products`) |
+| `sync-carousel.mjs` | Слайды карусели из папки `Carousel/` |
+| `sync-carousel.ps1` | Обёртка для `sync-carousel.mjs` |
+
+**Быстро:**
+
+```powershell
+.\scripts\migrate.ps1
+.\scripts\grant-admin.ps1 -Email "you@mail.com"
+cd frontend
+$env:SEED_EMAIL="you@mail.com"; $env:SEED_PASSWORD="пароль"; npm run seed:products
+```
 
 ## Переменные окружения
 

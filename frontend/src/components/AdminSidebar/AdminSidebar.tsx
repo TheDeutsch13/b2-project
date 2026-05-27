@@ -44,7 +44,7 @@ export function AdminSidebar() {
         />
         <div>
           <strong>{fullName}</strong>
-          <span>{roleLabel}</span>
+          <span className={styles.adminRole}>{roleLabel}</span>
         </div>
       </Link>
 
