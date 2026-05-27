@@ -1,0 +1,40 @@
+:root {
+  --color-bg: #0d0d14;
+  --color-bg-header: #0a0a0f;
+  --color-bg-elevated: #0a0a0f;
+  --color-surface: rgba(11, 11, 18, 0.85);
+  --color-surface-solid: #0b0b12;
+  --color-surface-card: #0b0b12;
+  --color-button-dark: #0b0b12;
+  --color-border: #1a1a24;
+  --color-border-accent: rgba(123, 63, 228, 0.45);
+  --color-input-border: #1a1a24;
+  --color-input-bg: #0b0b12;
+
+  --color-purple: #7b3fe4;
+  --color-purple-hover: #8d52f0;
+  --color-purple-dark: #6429c7;
+  --color-primary: #7b3fe4;
+  --color-primary-hover: #8d52f0;
+
+  --color-text: #ffffff;
+  --color-text-secondary: #9ca3af;
+  --color-muted: #6b7280;
+  --color-error: #ef4444;
+  --color-success: #22c55e;
+  --color-warning: #f59e0b;
+
+  --font-main: "Manrope", sans-serif;
+
+  --container-width: 1320px;
+  --header-height: 72px;
+  --sidebar-width: 280px;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+
+  --shadow-card: 0 24px 80px rgba(0, 0, 0, 0.45);
+  --shadow-button: 0 0 24px rgba(123, 63, 228, 0.4);
+}

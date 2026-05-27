@@ -1,0 +1,86 @@
+basePath: /
+definitions:
+  http.createProductRequest:
+    properties:
+      description:
+        type: string
+      price:
+        type: number
+      title:
+        type: string
+    type: object
+  http.productResponse:
+    properties:
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      price:
+        type: number
+      title:
+        type: string
+    type: object
+host: localhost:8082
+info:
+  contact: {}
+  description: API for products.
+  title: Product Service API
+  version: "1.0"
+paths:
+  /api/products:
+    get:
+      description: Returns all products
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/http.productResponse'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: List products
+      tags:
+      - products
+    post:
+      consumes:
+      - application/json
+      description: Creates a new product
+      parameters:
+      - description: Create product request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/http.createProductRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/http.productResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create product
+      tags:
+      - products
+swagger: "2.0"

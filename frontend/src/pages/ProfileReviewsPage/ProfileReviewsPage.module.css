@@ -1,0 +1,164 @@
+.title {
+  margin: 0 0 28px;
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.section + .section {
+  margin-top: 36px;
+}
+
+.sectionTitle {
+  margin: 0 0 6px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.sectionSubtitle {
+  margin: 0 0 18px;
+  color: var(--color-text-secondary);
+  font-size: 14px;
+}
+
+.error {
+  margin: 0 0 16px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  background: rgba(239, 68, 68, 0.12);
+  color: #f87171;
+  font-size: 14px;
+}
+
+.pendingList,
+.reviewsList {
+  display: grid;
+  gap: 12px;
+}
+
+.pendingCard,
+.reviewCard {
+  padding: 18px 20px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-card);
+}
+
+.pendingCard {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 16px;
+  align-items: center;
+}
+
+.thumb {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-md);
+  background: rgba(123, 63, 228, 0.15);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pendingInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pendingInfo strong {
+  font-size: 15px;
+}
+
+.pendingInfo span {
+  color: var(--color-muted);
+  font-size: 13px;
+}
+
+.reviewBtn {
+  height: 40px;
+  padding: 0 20px;
+  border: none;
+  border-radius: var(--radius-pill);
+  background: var(--color-purple);
+  color: var(--color-text);
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.reviewHead {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 16px;
+  align-items: start;
+  margin-bottom: 14px;
+}
+
+.reviewActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.editReviewBtn,
+.deleteReviewBtn {
+  height: 34px;
+  padding: 0 14px;
+  border-radius: var(--radius-pill);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.editReviewBtn {
+  border: 1px solid var(--color-border);
+  background: var(--color-button-dark);
+  color: var(--color-text-secondary);
+}
+
+.deleteReviewBtn {
+  border: 1px solid rgba(239, 68, 68, 0.45);
+  background: rgba(239, 68, 68, 0.1);
+  color: #fecaca;
+}
+
+.deleteReviewBtn:hover {
+  background: rgba(239, 68, 68, 0.2);
+}
+
+.reviewText {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.empty {
+  padding: 24px;
+  color: var(--color-text-secondary);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .pendingCard,
+  .reviewHead {
+    grid-template-columns: auto 1fr;
+  }
+
+  .reviewBtn,
+  .reviewActions {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+}

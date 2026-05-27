@@ -1,0 +1,20 @@
+.main {
+  padding: 28px 0 80px;
+}
+
+.layout {
+  display: flex;
+  gap: 28px;
+  align-items: flex-start;
+}
+
+.content {
+  flex: 1;
+  min-width: 0;
+}
+
+@media (max-width: 768px) {
+  .layout {
+    flex-direction: column;
+  }
+}

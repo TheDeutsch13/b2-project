@@ -1,0 +1,83 @@
+.main {
+  min-height: calc(100vh - var(--header-height));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 16px;
+}
+
+.card {
+  width: 100%;
+  max-width: 390px;
+  padding: 32px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: rgba(11, 11, 18, 0.9);
+}
+
+.card h1 {
+  margin: 0 0 8px;
+}
+
+.card p {
+  margin: 0 0 24px;
+  color: #b7b1c4;
+  font-size: 13px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.field input {
+  height: 36px;
+  padding: 0 12px;
+  border: 1px solid #3a3344;
+  border-radius: 7px;
+  background: rgba(9, 9, 15, 0.75);
+  color: var(--color-text);
+}
+
+.field small {
+  color: #ff6b8a;
+  font-size: 11px;
+}
+
+.errorBox {
+  margin-bottom: 12px;
+  padding: 10px;
+  border-radius: 6px;
+  background: rgba(255, 77, 109, 0.12);
+  color: #ff6b8a;
+  font-size: 12px;
+}
+
+.card button {
+  width: 100%;
+  height: 38px;
+  border: none;
+  border-radius: 7px;
+  background: var(--color-primary);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.footerText {
+  margin-top: 16px;
+  text-align: center;
+  font-size: 12px;
+}
+
+.footerText a {
+  color: var(--color-primary);
+}
+
+@media (max-width: 768px) {
+  .card {
+    padding: 24px 20px;
+  }
+}

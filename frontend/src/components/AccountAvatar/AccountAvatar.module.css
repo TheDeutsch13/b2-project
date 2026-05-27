@@ -1,0 +1,46 @@
+.avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #5b4a8f, #7b3fe4);
+  color: #fff;
+  font-weight: 700;
+  overflow: hidden;
+  flex-shrink: 0;
+  padding: 0;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.lg {
+  width: 72px;
+  height: 72px;
+  font-size: 28px;
+}
+
+.md {
+  width: 56px;
+  height: 56px;
+  font-size: 22px;
+}
+
+.sm {
+  width: 48px;
+  height: 48px;
+  font-size: 18px;
+}
+
+.clickable {
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.clickable:hover {
+  opacity: 0.9;
+}

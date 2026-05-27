@@ -1,0 +1,159 @@
+.hint {
+  margin: 0 0 16px;
+  color: var(--color-muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.filtersRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.filterSelect {
+  height: 38px;
+  min-width: 150px;
+  padding: 0 12px;
+  border: 1px solid var(--color-input-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-input-bg);
+  color: var(--color-text);
+  font-size: 13px;
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 38px;
+  flex: 1;
+  min-width: 220px;
+  padding: 0 14px;
+  border: 1px solid var(--color-input-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-input-bg);
+  color: var(--color-muted);
+}
+
+.search input {
+  border: none;
+  background: transparent;
+  color: var(--color-text);
+  outline: none;
+  width: 100%;
+  min-width: 0;
+  font-size: 13px;
+}
+
+.error {
+  margin: 0 0 12px;
+  color: #f87171;
+  font-size: 13px;
+}
+
+.tableWrap {
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-bg-elevated, var(--color-bg));
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.table th,
+.table td {
+  padding: 14px 16px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.table th {
+  color: var(--color-muted);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.emptyCell {
+  text-align: center;
+  color: var(--color-muted);
+  padding: 32px 16px !important;
+}
+
+.productLink {
+  color: var(--color-purple);
+  font-weight: 600;
+  transition: opacity 0.2s ease;
+}
+
+.productLink:hover {
+  opacity: 0.85;
+}
+
+.authorCell {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.verifiedBadge {
+  align-self: flex-start;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  background: rgba(123, 63, 228, 0.15);
+  color: var(--color-purple);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.stars {
+  display: inline-flex;
+  gap: 2px;
+}
+
+.starFilled {
+  fill: #f5c518;
+  color: #f5c518;
+}
+
+.starEmpty {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.textCell {
+  max-width: 360px;
+  line-height: 1.5;
+  color: var(--color-text);
+}
+
+.dateCell {
+  white-space: nowrap;
+  color: var(--color-muted);
+  font-size: 13px;
+}
+
+@media (max-width: 768px) {
+  .filtersRow {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filterSelect,
+  .search {
+    width: 100%;
+    min-width: 0;
+  }
+}

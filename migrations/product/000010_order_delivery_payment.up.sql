@@ -1,0 +1,1 @@
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS delivery_payment VARCHAR(32) NOT NULL DEFAULT 'on_receipt';

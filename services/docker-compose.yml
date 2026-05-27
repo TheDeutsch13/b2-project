@@ -1,0 +1,44 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: b2-postgres
+    environment:
+      POSTGRES_USER: b2user
+      POSTGRES_PASSWORD: b2password
+      POSTGRES_DB: b2db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U b2user -d b2db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  migrate-auth:
+    image: migrate/migrate:v4.18.1
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ../migrations/auth:/migrations
+    command:
+      - -path=/migrations
+      - -database=postgres://b2user:b2password@postgres:5432/b2db?sslmode=disable&x-migrations-table=auth_schema_migrations
+      - up
+
+  migrate-product:
+    image: migrate/migrate:v4.18.1
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ../migrations/product:/migrations
+    command:
+      - -path=/migrations
+      - -database=postgres://b2user:b2password@postgres:5432/b2db?sslmode=disable&x-migrations-table=product_schema_migrations
+      - up
+
+volumes:
+  postgres_data:

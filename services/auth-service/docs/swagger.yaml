@@ -1,0 +1,64 @@
+basePath: /
+definitions:
+  http.registerRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  http.registerResponse:
+    properties:
+      email:
+        type: string
+      id:
+        type: integer
+    type: object
+host: localhost:8081
+info:
+  contact: {}
+  description: API for user registration and authentication.
+  title: Auth Service API
+  version: "1.0"
+paths:
+  /api/auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Creates a new user account
+      parameters:
+      - description: Register request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/http.registerRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/http.registerResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "409":
+          description: Conflict
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Register user
+      tags:
+      - auth
+swagger: "2.0"

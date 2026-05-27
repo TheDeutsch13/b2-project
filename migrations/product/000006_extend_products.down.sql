@@ -1,0 +1,7 @@
+ALTER TABLE products
+    DROP COLUMN IF EXISTS brand,
+    DROP COLUMN IF EXISTS stock,
+    DROP COLUMN IF EXISTS images,
+    DROP COLUMN IF EXISTS specifications,
+    DROP COLUMN IF EXISTS variants,
+    DROP COLUMN IF EXISTS reviews;

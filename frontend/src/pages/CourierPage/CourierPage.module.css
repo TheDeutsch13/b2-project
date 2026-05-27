@@ -1,0 +1,25 @@
+.wrapper {
+  padding: 2rem 0 3rem;
+}
+
+.head {
+  margin-bottom: 1.5rem;
+}
+
+.head h1 {
+  margin: 0 0 0.35rem;
+  font-size: 1.75rem;
+}
+
+.head p {
+  margin: 0;
+  color: var(--text-muted, #9ca3af);
+}
+
+.message {
+  margin: 0 0 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  background: rgba(59, 130, 246, 0.12);
+  color: #93c5fd;
+}
