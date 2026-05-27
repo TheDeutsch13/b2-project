@@ -2,10 +2,6 @@
 
 > **Инструкция для проверяющего / преподавателя:** [ИНСТРУКЦИЯ_ЗАПУСКА.md](ИНСТРУКЦИЯ_ЗАПУСКА.md) — пошаговый запуск (Docker только для PostgreSQL, Go + Node локально, два репозитория).
 
-Монорепозиторий учебного проекта: React SPA + два Go-микросервиса, общая библиотека `b2-common`, PostgreSQL.
-
-**Сайт:** каталог, корзина, оформление заказа, личный кабинет, админ-панель, чат поддержки, отзывы покупателей.
-
 ## Стек
 
 | Слой | Технологии |
@@ -40,97 +36,6 @@
 ### UI/UX
 - Адаптив: десктоп ≥1280px, мобильный **375px** (breakpoint `768px`)
 - Фиолетовые кнопки соцсетей в футере (YouTube, VK, Telegram, Discord)
-
-## Структура репозитория
-
-```text
-b2-project/
-├── migrations/
-│   ├── auth/                 # users, profiles, refresh_tokens, roles
-│   └── product/              # categories, products, orders, support, reviews (JSONB)
-├── services/
-│   ├── docker-compose.yml    # PostgreSQL 16 + migrate
-│   ├── auth-service/         # :8081 — auth, профили, upload аватаров
-│   └── product-service/      # :8082 — каталог, заказы, отзывы, support, WS
-├── scripts/
-│   ├── migrate.ps1           # миграции в работающий контейнер
-│   ├── grant-admin.ps1       # выдать роль admin по email
-│   ├── seed-products.mjs     # демо-товары
-│   └── sync-carousel.mjs     # слайды из папки Carousel/
-├── Carousel/                 # исходники промо-карусели
-└── frontend/                 # Vite dev :5173
-```
-
-## Быстрый старт
-
-### Требования
-
-- Docker Desktop
-- Go 1.22+
-- Node.js 20+
-- Локально клонированный [b2-common](https://github.com/TheDeutsch13/b2-common) рядом с репозиторием (`../../../b2-common` в `go.mod`)
-
-### 1. База данных и миграции
-
-```powershell
-cd services
-docker compose up -d postgres
-docker compose up migrate-auth migrate-product
-```
-
-Или из корня (если Postgres уже запущен):
-
-```powershell
-.\scripts\migrate.ps1
-```
-
-### 2. Backend
-
-В **двух** терминалах, одинаковый `JWT_SECRET`:
-
-```powershell
-# Терминал 1 — auth-service
-cd services/auth-service
-$env:JWT_SECRET="gamegear-dev-secret"
-go run ./cmd/api
-
-# Терминал 2 — product-service
-cd services/product-service
-$env:JWT_SECRET="gamegear-dev-secret"
-go run ./cmd/api
-```
-
-### 3. Frontend
-
-```powershell
-cd frontend
-npm install
-npm run dev
-```
-
-Откройте http://localhost:5173  
-Полная пошаговая инструкция: **[ИНСТРУКЦИЯ_ЗАПУСКА.md](ИНСТРУКЦИЯ_ЗАПУСКА.md)**
-
-Опционально — демо-товары:
-
-```powershell
-cd frontend
-npm run seed:products
-```
-
-### 4. Первый администратор
-
-```powershell
-.\scripts\grant-admin.ps1 -Email "your@email.com"
-```
-
-Или SQL:
-
-```sql
-UPDATE users SET role = 'admin' WHERE email = 'your@email.com';
-```
-
-После смены роли в БД нужно **выйти и войти снова** (роль зашита в JWT).
 
 ## Роли
 
@@ -243,28 +148,3 @@ cd ../product-service
 go test ./internal/... -coverprofile=coverage.out
 go tool cover -func=coverage.out
 ```
-
-## Демо-сценарий для защиты
-
-1. Запуск: Postgres → миграции → auth + product + `npm run dev`
-2. Регистрация → каталог → корзина без входа → вход → checkout (3 шага)
-3. `grant-admin.ps1` → админка: товар, заказ, смена статуса → toast по WebSocket
-4. Пользователь: заказ «Получен» → отзыв на товаре
-5. Админ: вкладка «Отзывы» с фильтрами
-6. Чат поддержки: пользователь + модератор в двух вкладках
-7. Мобильная вёрстка 375px в DevTools
-8. Swagger + покрытие тестами
-
-## b2-common
-
-Локальная разработка:
-
-```go
-replace github.com/TheDeutsch13/b2-common => ../../../b2-common
-```
-
-После изменений в `b2-common`: `go mod tidy` в обоих сервисах.
-
-## Лицензия
-
-Учебный проект.
