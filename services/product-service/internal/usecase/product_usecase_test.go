@@ -129,3 +129,76 @@ func TestProductUsecase_List_Success(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Len(t, products, 2)
 }
+
+func TestProductUsecase_GetByID_Success(t *testing.T) {
+	repo := new(MockProductRepository)
+	productUsecase := NewProductUsecase(repo, nil, nil)
+
+	repo.On("GetByID", mock.Anything, int64(1)).
+		Return(&domain.Product{ID: 1, Title: "GPU"}, nil).Once()
+
+	product, err := productUsecase.GetByID(context.Background(), 1)
+
+	assert.NoError(t, err)
+	assert.Equal(t, "GPU", product.Title)
+}
+
+func TestProductUsecase_GetByID_NotFound(t *testing.T) {
+	repo := new(MockProductRepository)
+	productUsecase := NewProductUsecase(repo, nil, nil)
+
+	repo.On("GetByID", mock.Anything, int64(99)).
+		Return(nil, domain.ErrProductNotFound).Once()
+
+	product, err := productUsecase.GetByID(context.Background(), 99)
+
+	assert.Nil(t, product)
+	assert.ErrorIs(t, err, domain.ErrProductNotFound)
+}
+
+func TestProductUsecase_Delete_Success(t *testing.T) {
+	repo := new(MockProductRepository)
+	productUsecase := NewProductUsecase(repo, nil, nil)
+
+	repo.On("Delete", mock.Anything, int64(1)).Return(nil).Once()
+
+	err := productUsecase.Delete(context.Background(), 1)
+
+	assert.NoError(t, err)
+}
+
+func TestProductUsecase_Update_Success(t *testing.T) {
+	repo := new(MockProductRepository)
+	productUsecase := NewProductUsecase(repo, nil, nil)
+
+	repo.On("ExistsDuplicate", mock.Anything, "Updated", "", (*int64)(nil), "стандарт", int64(1)).
+		Return(false, nil).Once()
+	repo.On("Update", mock.Anything, mock.AnythingOfType("*domain.Product")).
+		Return(&domain.Product{ID: 1, Title: "Updated", Price: 50}, nil).Once()
+
+	product, err := productUsecase.Update(context.Background(), 1, ProductInput{
+		Title:       "Updated",
+		Description: "Desc",
+		Price:       50,
+	})
+
+	assert.NoError(t, err)
+	assert.Equal(t, "Updated", product.Title)
+}
+
+func TestProductUsecase_Create_Duplicate(t *testing.T) {
+	repo := new(MockProductRepository)
+	productUsecase := NewProductUsecase(repo, nil, nil)
+
+	repo.On("ExistsDuplicate", mock.Anything, "Dup", "", (*int64)(nil), "стандарт", int64(0)).
+		Return(true, nil).Once()
+
+	product, err := productUsecase.Create(context.Background(), ProductInput{
+		Title:       "Dup",
+		Description: "Desc",
+		Price:       10,
+	})
+
+	assert.Nil(t, product)
+	assert.ErrorIs(t, err, ErrProductDuplicate)
+}

@@ -92,6 +92,18 @@ func (m *mockUserRepository) ListPublicByIDs(ctx context.Context, ids []int64) (
 	return args.Get(0).([]domain.User), args.Error(1)
 }
 
+func (m *mockUserRepository) UpdateRole(
+	ctx context.Context,
+	userID int64,
+	role string,
+) (*domain.User, error) {
+	args := m.Called(ctx, userID, role)
+	if args.Get(0) == nil {
+		return nil, args.Error(1)
+	}
+	return args.Get(0).(*domain.User), args.Error(1)
+}
+
 type mockRefreshTokenRepository struct {
 	mock.Mock
 }

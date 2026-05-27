@@ -2,6 +2,7 @@ package http
 
 import (
 	"bytes"
+	"errors"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -58,6 +59,24 @@ func TestAuthHandler_Me_Success(t *testing.T) {
 	router.ServeHTTP(rec, req)
 
 	assert.Equal(t, http.StatusOK, rec.Code)
+}
+
+func TestAuthHandler_Refresh_InvalidToken(t *testing.T) {
+	repo := new(mockUserRepository)
+	refreshRepo := new(mockRefreshTokenRepository)
+	router := setupTestRouter(t, repo, refreshRepo)
+
+	refreshRepo.On("GetByToken", mock.Anything, "bad-token").
+		Return(nil, errors.New("not found")).Once()
+
+	body := []byte(`{"refresh_token":"bad-token"}`)
+	req := httptest.NewRequest(http.MethodPost, "/api/auth/refresh", bytes.NewBuffer(body))
+	req.Header.Set("Content-Type", "application/json")
+	rec := httptest.NewRecorder()
+
+	router.ServeHTTP(rec, req)
+
+	assert.Equal(t, http.StatusUnauthorized, rec.Code)
 }
 
 func TestAuthHandler_Me_Unauthorized(t *testing.T) {

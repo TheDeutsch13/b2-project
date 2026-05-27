@@ -91,6 +91,18 @@ func (m *MockUserRepository) ListPublicByIDs(ctx context.Context, ids []int64) (
 	return args.Get(0).([]domain.User), args.Error(1)
 }
 
+func (m *MockUserRepository) UpdateRole(
+	ctx context.Context,
+	userID int64,
+	role string,
+) (*domain.User, error) {
+	args := m.Called(ctx, userID, role)
+	if args.Get(0) == nil {
+		return nil, args.Error(1)
+	}
+	return args.Get(0).(*domain.User), args.Error(1)
+}
+
 type MockRefreshTokenRepository struct {
 	mock.Mock
 }
@@ -227,4 +239,71 @@ func TestAuthUsecase_Refresh_Success(t *testing.T) {
 
 	assert.NoError(t, err)
 	assert.NotEmpty(t, tokens.AccessToken)
+}
+
+func TestAuthUsecase_GetProfile_Success(t *testing.T) {
+	repo := new(MockUserRepository)
+	authUsecase := newTestAuthUsecase(repo, new(MockRefreshTokenRepository))
+
+	expected := &domain.User{ID: 1, Email: "test@example.com", Role: domain.RoleUser}
+	repo.On("GetByID", mock.Anything, int64(1)).Return(expected, nil).Once()
+
+	user, err := authUsecase.GetProfile(context.Background(), 1)
+
+	assert.NoError(t, err)
+	assert.Equal(t, expected.Email, user.Email)
+}
+
+func TestAuthUsecase_UpdateProfile_InvalidGender(t *testing.T) {
+	repo := new(MockUserRepository)
+	authUsecase := newTestAuthUsecase(repo, new(MockRefreshTokenRepository))
+
+	user, err := authUsecase.UpdateProfile(context.Background(), 1, domain.UserProfileInput{
+		Gender: "unknown",
+	})
+
+	assert.Nil(t, user)
+	assert.ErrorIs(t, err, ErrInvalidInput)
+}
+
+func TestAuthUsecase_UpdateUserRole_AdminSuccess(t *testing.T) {
+	repo := new(MockUserRepository)
+	authUsecase := newTestAuthUsecase(repo, new(MockRefreshTokenRepository))
+
+	repo.On("GetByID", mock.Anything, int64(1)).
+		Return(&domain.User{ID: 1, Role: domain.RoleAdmin}, nil).Once()
+	repo.On("UpdateRole", mock.Anything, int64(2), domain.RoleModerator).
+		Return(&domain.User{ID: 2, Role: domain.RoleModerator}, nil).Once()
+
+	user, err := authUsecase.UpdateUserRole(context.Background(), 1, 2, domain.RoleModerator)
+
+	assert.NoError(t, err)
+	assert.Equal(t, domain.RoleModerator, user.Role)
+}
+
+func TestAuthUsecase_UpdateUserRole_NotAdmin(t *testing.T) {
+	repo := new(MockUserRepository)
+	authUsecase := newTestAuthUsecase(repo, new(MockRefreshTokenRepository))
+
+	repo.On("GetByID", mock.Anything, int64(1)).
+		Return(&domain.User{ID: 1, Role: domain.RoleUser}, nil).Once()
+
+	user, err := authUsecase.UpdateUserRole(context.Background(), 1, 2, domain.RoleAdmin)
+
+	assert.Nil(t, user)
+	assert.ErrorIs(t, err, ErrInvalidInput)
+}
+
+func TestParseBirthDate(t *testing.T) {
+	parsed, err := ParseBirthDate("2000-05-15")
+	assert.NoError(t, err)
+	assert.NotNil(t, parsed)
+
+	empty, err := ParseBirthDate("")
+	assert.NoError(t, err)
+	assert.Nil(t, empty)
+
+	invalid, err := ParseBirthDate("15-05-2000")
+	assert.Nil(t, invalid)
+	assert.ErrorIs(t, err, ErrInvalidInput)
 }

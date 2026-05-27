@@ -31,3 +31,19 @@ func TestHub_Broadcast(t *testing.T) {
 		t.Fatal("expected notification")
 	}
 }
+
+func TestHub_Unregister(t *testing.T) {
+	hub := NewHub()
+	go hub.Run()
+
+	client := make(chan []byte, 1)
+	hub.Register(client)
+
+	time.Sleep(20 * time.Millisecond)
+
+	hub.Unregister(client)
+
+	time.Sleep(20 * time.Millisecond)
+
+	hub.Broadcast(Notification{Type: "test", Message: "after unregister"})
+}
